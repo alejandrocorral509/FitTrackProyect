@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.FitTrackProyect" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#05130D</item>
+    </style>
+    <style name="Theme.FitTrackProyect.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#05130D</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.FitTrackProyect</item>
+    </style>
+</resources>
