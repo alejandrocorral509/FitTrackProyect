@@ -17,3 +17,4 @@ local.properties
 # Salidas de build/release
 /app/release/
 app/build/
+.idea/
