@@ -18,4 +18,22 @@ object Racha {
         }
         return racha
     }
+
+    /** La racha más larga de todo el historial. */
+    fun mejor(diasEntrenados: Set<LocalDate>): Int {
+        var mejor = 0
+        diasEntrenados.forEach { dia ->
+            // Solo se empieza a contar desde el primer día de cada racha
+            if (dia.minusDays(1) !in diasEntrenados) {
+                var actual = dia
+                var largo = 0
+                while (actual in diasEntrenados) {
+                    largo++
+                    actual = actual.plusDays(1)
+                }
+                mejor = maxOf(mejor, largo)
+            }
+        }
+        return mejor
+    }
 }

@@ -36,10 +36,3 @@ val SuperficieClaraAlta = Color(0xFFEEF2EF)
 val BordeClaro = Color(0xFFDCE2DE)
 val TextoClaro = Color(0xFF111513)
 val TextoSecundarioClaro = Color(0xFF5B655F)
-
-// Colores de la versión anterior. Se eliminarán cuando todas las pantallas usen el tema.
-val Gray = Color(0xFF393939)
-val Black = Color(0xFF121212)
-val Green = Color(0xFF49dd63)
-val BackgroundButton = Color(0xFF111111)
-val ShapeButton = Color(0xFF3e3e3e)

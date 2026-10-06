@@ -62,6 +62,14 @@ class NutricionTest {
         assertEquals(0, Racha.diasSeguidos(setOf(hoy.minusDays(3)), hoy))
     }
 
+    @Test
+    fun `la mejor racha es la secuencia de dias seguidos mas larga`() {
+        val base = LocalDate.of(2026, 9, 1)
+        val dias = setOf(0, 1, 2, 5, 6, 7, 8, 12).map { base.plusDays(it.toLong()) }.toSet()
+        assertEquals(4, Racha.mejor(dias))
+        assertEquals(0, Racha.mejor(emptySet()))
+    }
+
     private fun assertEquals(esperado: Int, real: Int, margen: Int) =
         org.junit.Assert.assertEquals(esperado.toDouble(), real.toDouble(), margen.toDouble())
 }

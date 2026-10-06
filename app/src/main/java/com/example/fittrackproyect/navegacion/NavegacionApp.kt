@@ -46,7 +46,6 @@ import com.example.fittrackproyect.presentation.rutinas.EditorRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.PlantillasScreen
 import com.example.fittrackproyect.presentation.rutinas.RutinasScreen
 import com.example.fittrackproyect.presentation.sesion.SesionScreen
-import com.google.firebase.auth.FirebaseAuth
 
 object Rutas {
     const val BIENVENIDA = "bienvenida"
@@ -104,8 +103,6 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
     val alEntrar: (DestinoTrasEntrar) -> Unit = { destino ->
         nav.reiniciarEn(if (destino == DestinoTrasEntrar.INICIO) Rutas.INICIO else Rutas.COMPLETAR_PERFIL)
     }
-    // Las pantallas antiguas todavía reciben FirebaseAuth; se irán migrando a ViewModels
-    val auth = FirebaseAuth.getInstance()
 
     Scaffold(
         bottomBar = {
@@ -180,7 +177,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 DietaScreen(alAnadir = { tipo, fecha -> nav.navigate(Rutas.buscarAlimento(tipo, fecha)) })
             }
             composable(Rutas.PROGRESO) {
-                EstadisticasScreen(auth = auth, navigateBack = { nav.irAPestana(Rutas.INICIO) })
+                EstadisticasScreen()
             }
             composable(Rutas.PERFIL) {
                 PerfilScreen(bienvenida = false, alGuardar = {}, alCerrarSesion = { nav.reiniciarEn(Rutas.BIENVENIDA) })
