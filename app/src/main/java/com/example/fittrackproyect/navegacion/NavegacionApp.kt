@@ -190,7 +190,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
             }
 
             composable(Rutas.AGUA) {
-                AguaScreen(auth = auth, navigateBack = { nav.popBackStack() })
+                AguaScreen(alVolver = { nav.popBackStack() })
             }
             composable(Rutas.PLANTILLAS) {
                 PlantillasScreen(auth = auth, navigateBack = { nav.popBackStack() })
