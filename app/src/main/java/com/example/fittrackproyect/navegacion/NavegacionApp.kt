@@ -41,7 +41,7 @@ import com.example.fittrackproyect.presentation.dieta.BuscarAlimentoScreen
 import com.example.fittrackproyect.presentation.dieta.DietaScreen
 import com.example.fittrackproyect.presentation.estadisticas.EstadisticasScreen
 import com.example.fittrackproyect.presentation.inicio.InicioScreen
-import com.example.fittrackproyect.presentation.profile.ProfileScreen
+import com.example.fittrackproyect.presentation.perfil.PerfilScreen
 import com.example.fittrackproyect.presentation.rutinas.CrearRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.EditarRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.PlantillasScreen
@@ -154,7 +154,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 )
             }
             composable(Rutas.COMPLETAR_PERFIL) {
-                ProfileScreen(auth = auth, navigateBack = {}, navigateToHome = { nav.reiniciarEn(Rutas.INICIO) })
+                PerfilScreen(bienvenida = true, alGuardar = { nav.reiniciarEn(Rutas.INICIO) }, alCerrarSesion = {})
             }
 
             composable(Rutas.INICIO) {
@@ -186,7 +186,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 EstadisticasScreen(auth = auth, navigateBack = { nav.irAPestana(Rutas.INICIO) })
             }
             composable(Rutas.PERFIL) {
-                ProfileScreen(auth = auth, navigateBack = { nav.irAPestana(Rutas.INICIO) }, navigateToHome = { nav.irAPestana(Rutas.INICIO) })
+                PerfilScreen(bienvenida = false, alGuardar = {}, alCerrarSesion = { nav.reiniciarEn(Rutas.BIENVENIDA) })
             }
 
             composable(Rutas.AGUA) {
