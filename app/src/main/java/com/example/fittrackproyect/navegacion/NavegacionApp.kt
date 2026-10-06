@@ -42,8 +42,7 @@ import com.example.fittrackproyect.presentation.dieta.DietaScreen
 import com.example.fittrackproyect.presentation.estadisticas.EstadisticasScreen
 import com.example.fittrackproyect.presentation.inicio.InicioScreen
 import com.example.fittrackproyect.presentation.perfil.PerfilScreen
-import com.example.fittrackproyect.presentation.rutinas.CrearRutinaScreen
-import com.example.fittrackproyect.presentation.rutinas.EditarRutinaScreen
+import com.example.fittrackproyect.presentation.rutinas.EditorRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.PlantillasScreen
 import com.example.fittrackproyect.presentation.rutinas.RutinasScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -168,11 +167,10 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
             }
             composable(Rutas.ENTRENO) {
                 RutinasScreen(
-                    auth = auth,
-                    navigateBack = { nav.irAPestana(Rutas.INICIO) },
-                    navigateToCrearRutina = { nav.navigate(Rutas.NUEVA_RUTINA) },
-                    navigateToEditarRutina = { id -> nav.navigate(Rutas.editarRutina(id)) },
-                    navigateToPlantillas = { nav.navigate(Rutas.PLANTILLAS) }
+                    alCrear = { nav.navigate(Rutas.NUEVA_RUTINA) },
+                    alEditar = { id -> nav.navigate(Rutas.editarRutina(id)) },
+                    alEmpezar = { id -> nav.navigate(Rutas.editarRutina(id)) },
+                    alVerPlantillas = { nav.navigate(Rutas.PLANTILLAS) }
                 )
             }
             composable(Rutas.NUTRICION) {
@@ -189,14 +187,13 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 AguaScreen(alVolver = { nav.popBackStack() })
             }
             composable(Rutas.PLANTILLAS) {
-                PlantillasScreen(auth = auth, navigateBack = { nav.popBackStack() })
+                PlantillasScreen(alVolver = { nav.popBackStack() })
             }
             composable(Rutas.NUEVA_RUTINA) {
-                CrearRutinaScreen(auth = auth, navigateBack = { nav.popBackStack() })
+                EditorRutinaScreen(alVolver = { nav.popBackStack() })
             }
-            composable(Rutas.EDITAR_RUTINA) { entradaPila ->
-                val id = entradaPila.arguments?.getString("id") ?: return@composable
-                EditarRutinaScreen(auth = auth, rutinaId = id, navigateBack = { nav.popBackStack() })
+            composable(Rutas.EDITAR_RUTINA) {
+                EditorRutinaScreen(alVolver = { nav.popBackStack() })
             }
             composable(Rutas.BUSCAR_ALIMENTO) {
                 BuscarAlimentoScreen(alVolver = { nav.popBackStack() })
