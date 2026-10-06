@@ -67,7 +67,7 @@ fun EstadisticasScreen(viewModel: ProgresoViewModel = viewModel(factory = Progre
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Resumen(Icons.Filled.LocalFireDepartment, ColoresMetrica.calorias, "${s.rachaActual}", "racha actual", Modifier.weight(1f))
                 Resumen(Icons.Filled.EmojiEvents, ColoresMetrica.grasas, "${s.mejorRacha}", "mejor racha", Modifier.weight(1f))
-                Resumen(Icons.Filled.FitnessCenter, ColoresMetrica.entreno, "${s.totalEntrenos}", "entrenos totales", Modifier.weight(1f))
+                Resumen(Icons.Filled.FitnessCenter, ColoresMetrica.entreno, "${s.totalEntrenos}", "entrenos", Modifier.weight(1f))
             }
 
             TarjetaGrafico(

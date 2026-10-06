@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -89,6 +90,10 @@ fun GraficoBarras(
                     color = if (i == etiquetas.lastIndex) color else MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = if (i == etiquetas.lastIndex) FontWeight.Bold else FontWeight.Medium,
                     textAlign = TextAlign.Center,
+                    // En la vista de 30 días cada columna es estrecha: el número no debe partirse
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Visible,
                     modifier = Modifier.weight(1f)
                 )
             }
