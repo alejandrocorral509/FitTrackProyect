@@ -40,7 +40,7 @@ import com.example.fittrackproyect.presentation.auth.RegistroScreen
 import com.example.fittrackproyect.presentation.dieta.BuscarAlimentoScreen
 import com.example.fittrackproyect.presentation.dieta.DietaScreen
 import com.example.fittrackproyect.presentation.estadisticas.EstadisticasScreen
-import com.example.fittrackproyect.presentation.home.HomeScreen
+import com.example.fittrackproyect.presentation.inicio.InicioScreen
 import com.example.fittrackproyect.presentation.profile.ProfileScreen
 import com.example.fittrackproyect.presentation.rutinas.CrearRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.EditarRutinaScreen
@@ -158,14 +158,12 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
             }
 
             composable(Rutas.INICIO) {
-                HomeScreen(
-                    auth = auth,
-                    navigateToProfile = { nav.irAPestana(Rutas.PERFIL) },
-                    navigateToRutinas = { nav.irAPestana(Rutas.ENTRENO) },
-                    navigateToAgua = { nav.navigate(Rutas.AGUA) },
-                    navigateToDieta = { nav.irAPestana(Rutas.NUTRICION) },
-                    navigateToInitial = { nav.reiniciarEn(Rutas.BIENVENIDA) },
-                    navigateToEstadisticas = { nav.irAPestana(Rutas.PROGRESO) }
+                InicioScreen(
+                    alIrAPerfil = { nav.irAPestana(Rutas.PERFIL) },
+                    alIrAEntreno = { nav.irAPestana(Rutas.ENTRENO) },
+                    alEmpezarRutina = { nav.irAPestana(Rutas.ENTRENO) },
+                    alIrANutricion = { nav.irAPestana(Rutas.NUTRICION) },
+                    alIrAAgua = { nav.navigate(Rutas.AGUA) }
                 )
             }
             composable(Rutas.ENTRENO) {
