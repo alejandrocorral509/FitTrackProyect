@@ -45,6 +45,7 @@ import com.example.fittrackproyect.presentation.perfil.PerfilScreen
 import com.example.fittrackproyect.presentation.rutinas.EditorRutinaScreen
 import com.example.fittrackproyect.presentation.rutinas.PlantillasScreen
 import com.example.fittrackproyect.presentation.rutinas.RutinasScreen
+import com.example.fittrackproyect.presentation.sesion.SesionScreen
 import com.google.firebase.auth.FirebaseAuth
 
 object Rutas {
@@ -64,9 +65,11 @@ object Rutas {
     const val PLANTILLAS = "plantillas"
     const val NUEVA_RUTINA = "rutina/nueva"
     const val EDITAR_RUTINA = "rutina/{id}/editar"
+    const val SESION = "sesion/{id}"
     const val BUSCAR_ALIMENTO = "buscar/{tipo}/{fecha}"
 
     fun editarRutina(id: String) = "rutina/$id/editar"
+    fun sesion(id: String) = "sesion/$id"
     fun buscarAlimento(tipo: String, fecha: String) = "buscar/$tipo/$fecha"
 }
 
@@ -160,7 +163,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 InicioScreen(
                     alIrAPerfil = { nav.irAPestana(Rutas.PERFIL) },
                     alIrAEntreno = { nav.irAPestana(Rutas.ENTRENO) },
-                    alEmpezarRutina = { nav.irAPestana(Rutas.ENTRENO) },
+                    alEmpezarRutina = { id -> nav.navigate(Rutas.sesion(id)) },
                     alIrANutricion = { nav.irAPestana(Rutas.NUTRICION) },
                     alIrAAgua = { nav.navigate(Rutas.AGUA) }
                 )
@@ -169,7 +172,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 RutinasScreen(
                     alCrear = { nav.navigate(Rutas.NUEVA_RUTINA) },
                     alEditar = { id -> nav.navigate(Rutas.editarRutina(id)) },
-                    alEmpezar = { id -> nav.navigate(Rutas.editarRutina(id)) },
+                    alEmpezar = { id -> nav.navigate(Rutas.sesion(id)) },
                     alVerPlantillas = { nav.navigate(Rutas.PLANTILLAS) }
                 )
             }
@@ -194,6 +197,9 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
             }
             composable(Rutas.EDITAR_RUTINA) {
                 EditorRutinaScreen(alVolver = { nav.popBackStack() })
+            }
+            composable(Rutas.SESION) {
+                SesionScreen(alSalir = { nav.popBackStack() })
             }
             composable(Rutas.BUSCAR_ALIMENTO) {
                 BuscarAlimentoScreen(alVolver = { nav.popBackStack() })
