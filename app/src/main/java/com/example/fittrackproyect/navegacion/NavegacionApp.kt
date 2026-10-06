@@ -65,10 +65,10 @@ object Rutas {
     const val PLANTILLAS = "plantillas"
     const val NUEVA_RUTINA = "rutina/nueva"
     const val EDITAR_RUTINA = "rutina/{id}/editar"
-    const val BUSCAR_ALIMENTO = "buscar/{tipo}"
+    const val BUSCAR_ALIMENTO = "buscar/{tipo}/{fecha}"
 
     fun editarRutina(id: String) = "rutina/$id/editar"
-    fun buscarAlimento(tipo: String) = "buscar/$tipo"
+    fun buscarAlimento(tipo: String, fecha: String) = "buscar/$tipo/$fecha"
 }
 
 private data class Pestana(val ruta: String, val texto: String, val icono: ImageVector, val iconoActivo: ImageVector)
@@ -176,11 +176,7 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 )
             }
             composable(Rutas.NUTRICION) {
-                DietaScreen(
-                    auth = auth,
-                    navigateBack = { nav.irAPestana(Rutas.INICIO) },
-                    navigateToBuscar = { tipo -> nav.navigate(Rutas.buscarAlimento(tipo)) }
-                )
+                DietaScreen(alAnadir = { tipo, fecha -> nav.navigate(Rutas.buscarAlimento(tipo, fecha)) })
             }
             composable(Rutas.PROGRESO) {
                 EstadisticasScreen(auth = auth, navigateBack = { nav.irAPestana(Rutas.INICIO) })
@@ -202,9 +198,8 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 val id = entradaPila.arguments?.getString("id") ?: return@composable
                 EditarRutinaScreen(auth = auth, rutinaId = id, navigateBack = { nav.popBackStack() })
             }
-            composable(Rutas.BUSCAR_ALIMENTO) { entradaPila ->
-                val tipo = entradaPila.arguments?.getString("tipo") ?: "Desayuno"
-                BuscarAlimentoScreen(auth = auth, tipoComida = tipo, navigateBack = { nav.popBackStack() })
+            composable(Rutas.BUSCAR_ALIMENTO) {
+                BuscarAlimentoScreen(alVolver = { nav.popBackStack() })
             }
         }
     }
