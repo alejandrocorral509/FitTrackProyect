@@ -68,6 +68,7 @@ fun PerfilScreen(
     bienvenida: Boolean,
     alGuardar: () -> Unit,
     alCerrarSesion: () -> Unit,
+    alSaltar: () -> Unit = {},
     viewModel: PerfilViewModel = viewModel(factory = PerfilViewModel.Factory)
 ) {
     val s by viewModel.estado.collectAsStateWithLifecycle()
@@ -172,7 +173,11 @@ fun PerfilScreen(
                 { viewModel.guardar(alGuardar) },
                 cargando = s.guardando
             )
-            if (!bienvenida) {
+            if (bienvenida) {
+                androidx.compose.material3.TextButton(onClick = alSaltar, modifier = Modifier.fillMaxWidth()) {
+                    Text("Ahora no, lo haré más tarde")
+                }
+            } else {
                 OutlinedButton(
                     onClick = { viewModel.cerrarSesion(); alCerrarSesion() },
                     modifier = Modifier.fillMaxWidth().height(52.dp),

@@ -102,7 +102,7 @@ fun AguaScreen(
             }
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Pastilla("Botella 500 ml", false, { viewModel.cambiar(+2) }, color = azul, emoji = "🧴")
-                Pastilla("Litro", false, { viewModel.cambiar(+4) }, color = azul, emoji = "🫗")
+                Pastilla("Litro", false, { viewModel.cambiar(+4) }, color = azul, emoji = "💧")
             }
 
             Tarjeta(Modifier.fillMaxWidth()) {

@@ -153,7 +153,12 @@ fun NavegacionApp(destinoInicial: String, nav: NavHostController = rememberNavCo
                 )
             }
             composable(Rutas.COMPLETAR_PERFIL) {
-                PerfilScreen(bienvenida = true, alGuardar = { nav.reiniciarEn(Rutas.INICIO) }, alCerrarSesion = {})
+                PerfilScreen(
+                    bienvenida = true,
+                    alGuardar = { nav.reiniciarEn(Rutas.INICIO) },
+                    alCerrarSesion = {},
+                    alSaltar = { nav.reiniciarEn(Rutas.INICIO) }
+                )
             }
 
             composable(Rutas.INICIO) {
