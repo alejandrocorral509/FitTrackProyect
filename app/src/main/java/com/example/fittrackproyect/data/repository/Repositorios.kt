@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -95,7 +96,9 @@ class PerfilRepository(
 
     suspend fun subirFoto(uid: String, imagen: Uri): String {
         val ref = storage.reference.child("profiles/$uid/avatar.jpg")
-        ref.putFile(imagen).await()
+        // Las reglas de Storage solo aceptan imágenes: se indica el tipo explícitamente
+        val metadatos = StorageMetadata.Builder().setContentType("image/jpeg").build()
+        ref.putFile(imagen, metadatos).await()
         val url = ref.downloadUrl.await().toString()
         doc(uid).set(mapOf("fotoUrl" to url), SetOptions.merge()).await()
         return url

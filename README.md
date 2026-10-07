@@ -42,6 +42,10 @@ users/{uid}/dieta/{yyyy-MM-dd}/comidas    alimentos del día
 users/{uid}/rutinas/{id}                  ejercicios e historial de días completados
 ```
 
+### Seguridad
+
+Las reglas de [`firestore.rules`](firestore.rules) y [`storage.rules`](storage.rules) hacen que cada usuario solo pueda leer y escribir sus propios datos y su foto de perfil (solo imágenes de menos de 5 MB). Todo lo demás está cerrado.
+
 ## Tecnologías
 
 | | |
@@ -66,6 +70,10 @@ Prueban los cálculos de IMC, calorías, macros, agua y rachas (`app/src/test`).
 1. Abre el proyecto con Android Studio.
 2. La app usa el proyecto de Firebase de `app/google-services.json`. Para usar uno propio, sustitúyelo y activa en Firebase el inicio de sesión con email y con Google.
 3. Ejecuta en un móvil o emulador con Android 8.0 (API 26) o superior.
+
+## Hoja de ruta
+
+Las próximas mejoras están en las [issues del repositorio](https://github.com/alejandrocorral509/FitTrackProyect/issues), ordenadas por prioridad.
 
 ---
 
