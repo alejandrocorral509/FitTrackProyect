@@ -223,6 +223,7 @@ private fun FilaComida(comida: Comida, alBorrar: (Comida) -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+            Spacer(Modifier.width(12.dp))
             Text("${comida.calorias} kcal", style = MaterialTheme.typography.labelLarge)
         }
     }
