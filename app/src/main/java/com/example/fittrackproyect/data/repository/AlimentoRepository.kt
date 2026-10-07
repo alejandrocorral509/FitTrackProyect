@@ -16,11 +16,14 @@ class AlimentoRepository {
         if (texto.isBlank()) alimentosFrecuentes
         else alimentosFrecuentes.filter { it.nombre.contains(texto.trim(), ignoreCase = true) }
 
+    // Se usa el buscador de texto de Open Food Facts (search-a-licious): el endpoint
+    // api/v2/search ignora el texto y devuelve productos populares de cualquier país.
+    // Se filtra por productos vendidos en España.
     suspend fun buscarOnline(texto: String): List<Alimento> = withContext(Dispatchers.IO) {
-        val consulta = URLEncoder.encode(texto.trim(), "UTF-8")
+        val consulta = URLEncoder.encode("${texto.trim()} countries_tags:\"en:spain\"", "UTF-8")
         val url = URL(
-            "https://world.openfoodfacts.org/api/v2/search?search_terms=$consulta" +
-                "&fields=product_name,nutriments&page_size=25"
+            "https://search.openfoodfacts.org/search?q=$consulta&langs=es&page_size=25" +
+                "&fields=product_name,product_name_es,brands,nutriments"
         )
         val conexion = (url.openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
@@ -30,14 +33,18 @@ class AlimentoRepository {
         }
         try {
             if (conexion.responseCode != 200) return@withContext emptyList()
-            val productos = JSONObject(conexion.inputStream.bufferedReader().readText()).getJSONArray("products")
+            val productos = JSONObject(conexion.inputStream.bufferedReader().readText()).getJSONArray("hits")
             (0 until productos.length()).mapNotNull { i ->
                 val producto = productos.getJSONObject(i)
-                val nombre = producto.optString("product_name").trim().takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                val nombre = listOf("product_name_es", "product_name")
+                    .map { producto.optString(it).trim() }
+                    .firstOrNull { it.isNotBlank() } ?: return@mapNotNull null
+                // La marca ayuda a distinguir productos con el mismo nombre
+                val marca = producto.optJSONArray("brands")?.optString(0)?.trim().orEmpty()
                 val nutrientes = producto.optJSONObject("nutriments") ?: return@mapNotNull null
                 val kcal = nutrientes.optDouble("energy-kcal_100g", -1.0).takeIf { it >= 0 } ?: return@mapNotNull null
                 Alimento(
-                    nombre = nombre.take(50),
+                    nombre = (if (marca.isBlank()) nombre else "$nombre · $marca").take(50),
                     calorias = kcal,
                     proteinas = nutrientes.optDouble("proteins_100g", 0.0),
                     carbos = nutrientes.optDouble("carbohydrates_100g", 0.0),
