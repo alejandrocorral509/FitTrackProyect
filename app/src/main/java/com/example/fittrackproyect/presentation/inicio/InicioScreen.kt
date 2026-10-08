@@ -79,7 +79,7 @@ fun InicioScreen(
                 Text("${s.saludo},", style = MaterialTheme.typography.headlineSmall)
                 Text(s.nombre, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
             }
-            Avatar(s.fotoUrl, s.nombre, Modifier.clickable(onClick = alIrAPerfil), tamano = 52.dp)
+            Avatar(s.foto, s.nombre, Modifier.clickable(onClick = alIrAPerfil), tamano = 52.dp)
         }
 
         if (!s.cargando && !s.perfilCompleto) {

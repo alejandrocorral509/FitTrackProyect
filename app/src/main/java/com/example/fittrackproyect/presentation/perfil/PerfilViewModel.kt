@@ -23,7 +23,7 @@ data class PerfilUiState(
     val cargando: Boolean = true,
     val nombre: String = "",
     val email: String = "",
-    val fotoUrl: String? = null,
+    val foto: String? = null,
     val subiendoFoto: Boolean = false,
     val peso: String = "",
     val estatura: String = "",
@@ -66,7 +66,7 @@ data class PerfilUiState(
         }
     }
 
-    fun aPerfil() = Perfil(pesoNum, estaturaNum, edadNum, esHombre, nivel, fotoUrl = fotoUrl)
+    fun aPerfil() = Perfil(pesoNum, estaturaNum, edadNum, esHombre, nivel, foto = foto)
 }
 
 class PerfilViewModel(
@@ -84,7 +84,7 @@ class PerfilViewModel(
                 if (perfil == null) it.copy(cargando = false)
                 else it.copy(
                     cargando = false,
-                    fotoUrl = perfil.fotoUrl,
+                    foto = perfil.foto,
                     peso = perfil.peso?.let(::sinDecimalesSobrantes).orEmpty(),
                     estatura = perfil.estatura?.let(::sinDecimalesSobrantes).orEmpty(),
                     edad = perfil.edad?.toString().orEmpty(),
@@ -117,15 +117,15 @@ class PerfilViewModel(
         }
     }
 
-    fun subirFoto(imagen: Uri) {
+    fun cambiarFoto(imagen: Uri) {
         val uid = auth.uid ?: return
         _estado.update { it.copy(subiendoFoto = true) }
         viewModelScope.launch {
             try {
-                val url = perfiles.subirFoto(uid, imagen)
-                _estado.update { it.copy(subiendoFoto = false, fotoUrl = url, mensaje = "Foto actualizada") }
+                val foto = perfiles.guardarFoto(uid, imagen)
+                _estado.update { it.copy(subiendoFoto = false, foto = foto, mensaje = "Foto actualizada") }
             } catch (_: Exception) {
-                _estado.update { it.copy(subiendoFoto = false, mensaje = "No se ha podido subir la foto") }
+                _estado.update { it.copy(subiendoFoto = false, mensaje = "No se ha podido guardar la foto") }
             }
         }
     }

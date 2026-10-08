@@ -74,7 +74,7 @@ fun PerfilScreen(
     val s by viewModel.estado.collectAsStateWithLifecycle()
     val avisos = remember { SnackbarHostState() }
     val selectorFoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        uri?.let(viewModel::subirFoto)
+        uri?.let(viewModel::cambiarFoto)
     }
     LaunchedEffect(s.mensaje) {
         s.mensaje?.let { avisos.showSnackbar(it); viewModel.mensajeMostrado() }
@@ -110,7 +110,7 @@ fun PerfilScreen(
                     },
                     contentAlignment = Alignment.BottomEnd
                 ) {
-                    Avatar(s.fotoUrl, s.nombre, tamano = 76.dp)
+                    Avatar(s.foto, s.nombre, tamano = 76.dp)
                     Box(
                         Modifier.size(26.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
                         contentAlignment = Alignment.Center

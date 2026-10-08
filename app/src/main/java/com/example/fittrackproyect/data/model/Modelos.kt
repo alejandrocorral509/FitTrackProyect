@@ -11,7 +11,8 @@ data class Perfil(
     val esHombre: Boolean = true,
     val nivelActividad: NivelActividad = NivelActividad.MODERADO,
     val objetivoCalorias: Int? = null,
-    val fotoUrl: String? = null
+    /** Foto de perfil en JPEG codificado en Base64 */
+    val foto: String? = null
 ) {
     val completo: Boolean get() = peso != null && estatura != null && edad != null
 

@@ -1,5 +1,6 @@
 package com.example.fittrackproyect.data.repository
 
+import android.content.ContentResolver
 import android.net.Uri
 import com.example.fittrackproyect.data.model.Comida
 import com.example.fittrackproyect.data.model.Ejercicio
@@ -8,18 +9,19 @@ import com.example.fittrackproyect.data.model.Rutina
 import com.example.fittrackproyect.data.model.TipoComida
 import com.example.fittrackproyect.domain.NivelActividad
 import com.example.fittrackproyect.domain.Nutricion
+import com.example.fittrackproyect.util.Imagenes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 /*
  * Toda la comunicación con Firebase está aquí. Las pantallas y los ViewModels
@@ -60,7 +62,7 @@ class AuthRepository(private val auth: FirebaseAuth) {
 
 class PerfilRepository(
     private val db: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    private val resolver: ContentResolver
 ) {
     private fun doc(uid: String) = db.collection("users").document(uid)
 
@@ -94,14 +96,11 @@ class PerfilRepository(
         doc(uid).set(datos, SetOptions.merge()).await()
     }
 
-    suspend fun subirFoto(uid: String, imagen: Uri): String {
-        val ref = storage.reference.child("profiles/$uid/avatar.jpg")
-        // Las reglas de Storage solo aceptan imágenes: se indica el tipo explícitamente
-        val metadatos = StorageMetadata.Builder().setContentType("image/jpeg").build()
-        ref.putFile(imagen, metadatos).await()
-        val url = ref.downloadUrl.await().toString()
-        doc(uid).set(mapOf("fotoUrl" to url), SetOptions.merge()).await()
-        return url
+    /** Reduce la foto y la guarda en el propio perfil. Devuelve la foto guardada. */
+    suspend fun guardarFoto(uid: String, imagen: Uri): String {
+        val foto = withContext(Dispatchers.Default) { Imagenes.fotoDePerfil(resolver, imagen) }
+        doc(uid).set(mapOf("foto" to foto), SetOptions.merge()).await()
+        return foto
     }
 
     private fun DocumentSnapshot.aPerfil() = Perfil(
@@ -111,7 +110,7 @@ class PerfilRepository(
         esHombre = getString("sexo") != "Mujer",
         nivelActividad = NivelActividad.desdeEtiqueta(getString("nivelActividad")),
         objetivoCalorias = getLong("objetivoCalorias")?.toInt(),
-        fotoUrl = getString("fotoUrl")
+        foto = getString("foto")
     )
 }
 

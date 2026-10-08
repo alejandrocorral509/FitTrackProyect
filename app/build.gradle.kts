@@ -59,7 +59,6 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.coil.compose)
-    implementation("com.google.firebase:firebase-storage-ktx")
 
 
     implementation(libs.androidx.navigation.compose)

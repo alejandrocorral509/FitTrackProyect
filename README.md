@@ -24,7 +24,7 @@ App Android para llevar en un solo sitio el entreno, la alimentación y la hidra
 
 ```
 UI (Compose)  →  ViewModel (StateFlow)  →  Repositorio  →  Firebase
-   pantallas        estado de pantalla       acceso a datos    Auth · Firestore · Storage
+   pantallas        estado de pantalla       acceso a datos    Auth · Firestore
 ```
 
 - **`presentation/`**: una carpeta por pantalla con su `Screen` y su `ViewModel`. Las pantallas solo pintan el estado y avisan de lo que hace el usuario.
@@ -36,7 +36,7 @@ UI (Compose)  →  ViewModel (StateFlow)  →  Repositorio  →  Firebase
 ### Datos en Firestore
 
 ```
-users/{uid}                               perfil y objetivos
+users/{uid}                               perfil, objetivos y foto
 users/{uid}/agua/{yyyy-MM-dd}             vasos del día
 users/{uid}/dieta/{yyyy-MM-dd}/comidas    alimentos del día
 users/{uid}/rutinas/{id}                  ejercicios e historial de días completados
@@ -44,7 +44,9 @@ users/{uid}/rutinas/{id}                  ejercicios e historial de días comple
 
 ### Seguridad
 
-Las reglas de [`firestore.rules`](firestore.rules) y [`storage.rules`](storage.rules) hacen que cada usuario solo pueda leer y escribir sus propios datos y su foto de perfil (solo imágenes de menos de 5 MB). Todo lo demás está cerrado.
+Las reglas de [`firestore.rules`](firestore.rules) hacen que cada usuario solo pueda leer y escribir sus propios datos. Todo lo demás está cerrado.
+
+La foto de perfil se recorta y se reduce a 256 × 256 px en el móvil y se guarda dentro del documento del usuario (unos 30 KB), así la app funciona entera en el plan gratuito de Firebase, que no incluye Storage. Las reglas limitan su tamaño.
 
 ## Tecnologías
 
@@ -53,7 +55,7 @@ Las reglas de [`firestore.rules`](firestore.rules) y [`storage.rules`](storage.r
 | Lenguaje | Kotlin, corrutinas y Flow |
 | UI | Jetpack Compose, Material 3, Navigation Compose |
 | Arquitectura | MVVM con `ViewModel` y `StateFlow` |
-| Backend | Firebase Authentication (email y Google), Cloud Firestore, Storage |
+| Backend | Firebase Authentication (email y Google), Cloud Firestore |
 | Imágenes | Coil |
 | Tests | JUnit |
 
